@@ -1,0 +1,52 @@
+﻿<Window x:Class="lr1_PaymentsBase.EditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:lr1_PaymentsBase"
+        mc:Ignorable="d"
+        Title="EditWindow" Height="362" Width="368" WindowStartupLocation="CenterScreen" Topmost="True" Background="Black">
+    <Window.Resources>
+        <Style x:Key="GreenButtonStyle" >
+            <Setter Property="Button.Width" Value="120"/>
+            <Setter Property="Button.Height" Value="30"/>
+            <Setter Property="Button.FontFamily" Value="Verdana"/>
+            <Setter Property="Button.FontSize" Value="14"/>
+            <Setter Property="Button.FontWeight" Value="Normal"/>
+            <Setter Property="Button.Foreground" Value="White"/>
+            <Setter Property="Button.Background" Value="DarkGreen"/>
+            <Setter Property="Button.BorderBrush" Value="Black"/>
+        </Style>
+    </Window.Resources>
+    <Grid >
+        <StackPanel VerticalAlignment="Center" Height="298" Margin="54,0,48,0">
+            <StackPanel VerticalAlignment="Center">
+                <Label Content="ФИО" HorizontalAlignment="Center" Foreground="Aqua"/>
+                <ComboBox x:Name="cbFIO" Width="166" SelectedItem="{Binding User}" DisplayMemberPath="FIO"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center">
+                <Label Content="Дата платежа" HorizontalAlignment="Center" Foreground="Aqua"/>
+                <TextBox Name="tbDate" Width="110" Text="{Binding Date}"  Background="Gray" Foreground="Orange"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center">
+                <Label Content="Категория" HorizontalAlignment="Center" Foreground="Aqua"/>
+                <ComboBox Name="cbCategory" Width="166" SelectedItem="{Binding Category}" DisplayMemberPath="Name"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center">
+                <Label Content="Наименование" HorizontalAlignment="Center" Foreground="Aqua"/>
+                <TextBox Name="tbName" Width="172" Text="{Binding Name}"  Background="Gray" Foreground="Orange"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center" >
+                <Label Content="Цена" HorizontalAlignment="Center" Foreground="Aqua"/>
+                <TextBox Name="tbPrice" Width="90" Text="{Binding Price}"  Background="Gray" Foreground="Orange"/>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center">
+                <Label Content="Кол-во" HorizontalAlignment="Center" Foreground="Aqua"/>
+                <TextBox Name="tbKol"  HorizontalAlignment="Center" Width="78" Text="{Binding Num}"  Background="Gray" Foreground="Orange"/>
+            </StackPanel>
+            <Button Name="btSave" Content="Сохранить" Height="22" Click="btSave_Click" Style="{StaticResource GreenButtonStyle}"/>
+        </StackPanel>
+
+
+    </Grid>
+</Window>

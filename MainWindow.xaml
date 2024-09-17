@@ -1,0 +1,73 @@
+﻿<Window x:Class="lr1_PaymentsBase.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:lr1_PaymentsBase"
+        mc:Ignorable="d"
+        Title="PaymentWindow" Height="450" Width="800" Cursor="" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Activated="Window_Activated" Topmost="True" Background="Black">
+    <Window.Resources>
+        <Style x:Key="GreenButton" >
+            
+            <Setter Property="Button.FontFamily" Value="Verdana"/>
+            
+            <Setter Property="Button.FontWeight" Value="Normal"/>
+            <Setter Property="Button.Foreground" Value="White"/>
+            <Setter Property="Button.Background" Value="DarkGreen"/>
+            <Setter Property="Button.BorderBrush" Value="Black"/>
+        </Style>
+        <Style x:Key="RedButton" >
+
+            <Setter Property="Button.FontFamily" Value="Verdana"/>
+
+            <Setter Property="Button.FontWeight" Value="Normal"/>
+            <Setter Property="Button.Foreground" Value="White"/>
+            <Setter Property="Button.Background" Value="DarkRed"/>
+            <Setter Property="Button.BorderBrush" Value="Black"/>
+        </Style>
+        <Style x:Key="YellowButton" >
+
+            <Setter Property="Button.FontFamily" Value="Verdana"/>
+
+            <Setter Property="Button.FontWeight" Value="Normal"/>
+            <Setter Property="Button.Foreground" Value="Black"/>
+            <Setter Property="Button.Background" Value="Yellow"/>
+            <Setter Property="Button.BorderBrush" Value="Black"/>
+        </Style>
+    </Window.Resources>
+    <Grid Background="Black">
+       
+
+
+
+        <StackPanel Grid.ColumnSpan="2">
+            <StackPanel Height="432" >
+                <DockPanel  LastChildFill="False" Width="798" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                    <Button Content="Добавить" Width="NaN" Name="btAdd" Click="btAdd_Click" Style="{StaticResource GreenButton}"/>
+                    <Button Content="Удалить" Width="NaN" Name="btDel" Click="btDel_Click" Style="{StaticResource RedButton}"/>
+                </DockPanel>
+                <DataGrid  Name="DG" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto" Height="413" IsReadOnly="True" VerticalAlignment="Stretch" Background="Black" Foreground="Black">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding User.FIO}" Width="*" Header="ФИО"/>
+                        <DataGridTextColumn Binding="{Binding Date}" Width="*" Header="Дата"/>
+                        <DataGridTextColumn Binding="{Binding Category.Name}" Width="*" Header="Категория"/>
+                        <DataGridTextColumn Binding="{Binding Name}" Width="*" Header="Наименование"/>
+                        <DataGridTextColumn Binding="{Binding Price}" Width="*" Header="Цена"/>
+                        <DataGridTextColumn Binding="{Binding Num}" Width="*" Header="Кол-во"/>
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button
+                                        Name="btEdit"
+                                        Content="Редактировать"
+                                        Click="btEdit_Click" Style="{StaticResource YellowButton}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
