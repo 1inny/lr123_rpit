@@ -26,7 +26,7 @@
             </StackPanel>
             <StackPanel HorizontalAlignment="Center">
                 <Label Content="Дата платежа" HorizontalAlignment="Center" Foreground="Aqua"/>
-                <TextBox Name="tbDate" Width="110" Text="{Binding Date}"  Background="Gray" Foreground="Orange"/>
+                <DatePicker Name="dpDate" Width="110"  SelectedDate="{Binding Date}" Background="Gray" Foreground="Orange"/>
             </StackPanel>
             <StackPanel HorizontalAlignment="Center">
                 <Label Content="Категория" HorizontalAlignment="Center" Foreground="Aqua"/>

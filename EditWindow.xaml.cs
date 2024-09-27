@@ -19,6 +19,7 @@ namespace lr1_PaymentsBase
             if (selectedPayment != null)
             {
                 _currentPaym = selectedPayment;
+                dpDate.Text = selectedPayment.Date.ToString();
             }
 
             DataContext = _currentPaym;
