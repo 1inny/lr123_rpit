@@ -21,6 +21,14 @@ namespace lr1_PaymentsBase
         public string Name { get; set; }
         public int Num { get; set; }
         public decimal Price { get; set; }
+
+        public decimal Sum
+        {
+            get
+            {
+                return Num * Price;
+            }
+        }
     
         public virtual Category Category { get; set; }
         public virtual User User { get; set; }

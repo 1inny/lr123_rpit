@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:lr1_PaymentsBase"
         mc:Ignorable="d"
-        Title="PaymentWindow" Height="450" Width="800" Cursor="" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Activated="Window_Activated" Topmost="True" Background="Black">
+        Title="PaymentWindow" Height="450" Width="800" Cursor="" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Activated="Window_Activated" Background="Black">
     <Window.Resources>
         <Style x:Key="GreenButton" >
-            
+
             <Setter Property="Button.FontFamily" Value="Verdana"/>
-            
+
             <Setter Property="Button.FontWeight" Value="Normal"/>
             <Setter Property="Button.Foreground" Value="White"/>
             <Setter Property="Button.Background" Value="DarkGreen"/>
@@ -36,24 +36,36 @@
         </Style>
     </Window.Resources>
     <Grid Background="Black">
-       
 
 
 
-        <StackPanel Grid.ColumnSpan="2">
+
+        <StackPanel >
             <StackPanel Height="432" >
-                <DockPanel  LastChildFill="False" Width="798" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                    <Button Content="Добавить" Width="NaN" Name="btAdd" Click="btAdd_Click" Style="{StaticResource GreenButton}"/>
-                    <Button Content="Удалить" Width="NaN" Name="btDel" Click="btDel_Click" Style="{StaticResource RedButton}"/>
-                </DockPanel>
-                <DataGrid  Name="DG" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto" Height="413" IsReadOnly="True" VerticalAlignment="Stretch" Background="Black" Foreground="Black">
+                <Menu Width="NaN" Height="NaN" Background="PowderBlue" HorizontalAlignment="Center" Name="menu">
+                    <MenuItem Header="Управление" Background="RosyBrown" HorizontalAlignment="Center">
+                        <Button Content="Добавить" Width="NaN" Name="btAdd" Click="btAdd_Click" Style="{StaticResource GreenButton}" />
+                        <Button Content="Удалить" Width="NaN" Name="btDel" Click="btDel_Click" Style="{StaticResource RedButton}" />
+                    </MenuItem>
+                    <MenuItem Header="Сортировка" HorizontalAlignment="Center" Background="Chocolate">
+                        <ComboBox Name="cbFIO"  Width="NaN"  SelectedItem="{Binding User}" DisplayMemberPath="FIO" SelectedValuePath="Id"/>
+                        <ComboBox Name="cbCategory"  Width="NaN"  SelectedItem="{Binding Category}" DisplayMemberPath="Name" SelectedValuePath="Id"/>
+                        <Button Content="Найти" Name="btSearch" Click="btSearch_Click" Width="NaN" Style="{StaticResource GreenButton}"/>
+                        <Button Content="Сброс" Name="btClear" Click="btClear_Click" Width="NaN" Style="{StaticResource YellowButton}"/>
+                    </MenuItem>
+                    <MenuItem Header="" Background="PowderBlue" Width="NaN" Name="mItem"/>
+                </Menu>
+                
+
+                <DataGrid  Name="DG" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto" Height="416" IsReadOnly="True" Background="Black" Foreground="Black" HorizontalAlignment="Center">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding User.FIO}" Width="*" Header="ФИО"/>
-                        <DataGridTextColumn Binding="{Binding Date}" Width="*" Header="Дата"/>
+                        <DataGridTextColumn Binding="{Binding Date}" Width="62" Header="Дата"/>
                         <DataGridTextColumn Binding="{Binding Category.Name}" Width="*" Header="Категория"/>
                         <DataGridTextColumn Binding="{Binding Name}" Width="*" Header="Наименование"/>
                         <DataGridTextColumn Binding="{Binding Price}" Width="*" Header="Цена"/>
                         <DataGridTextColumn Binding="{Binding Num}" Width="*" Header="Кол-во"/>
+                        <DataGridTextColumn Binding="{Binding Sum}" Width="*" Header="Сумма"/>
                         <DataGridTemplateColumn Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -66,6 +78,7 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
+                
 
             </StackPanel>
         </StackPanel>

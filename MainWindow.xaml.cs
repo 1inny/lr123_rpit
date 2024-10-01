@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.RightsManagement;
 
 namespace lr1_PaymentsBase
 {
@@ -21,12 +23,18 @@ namespace lr1_PaymentsBase
     /// </summary>
     public partial class MainWindow : Window
     {
+        public int allcount { get; set; }
         public MainWindow()
         {
             InitializeComponent();
+            cbCategory.ItemsSource = PaymentsBaseLocalEntities.GetContext().Category.ToList();
+            cbFIO.ItemsSource = PaymentsBaseLocalEntities.GetContext().User.ToList();
             DG.ItemsSource = PaymentsBaseLocalEntities.GetContext().Payment.ToList();
+            
+            DG.SelectAll();  allcount = DG.SelectedItems.Count; DG.UnselectAll();
+            
         }
-
+        
         private void btAdd_Click(object sender, RoutedEventArgs e)
         {
             EditWindow editwin = new EditWindow(null);
@@ -42,6 +50,45 @@ namespace lr1_PaymentsBase
         private void Window_Activated(object sender, EventArgs e)
         {
             DG.ItemsSource = PaymentsBaseLocalEntities.GetContext().Payment.ToList();
+        }
+
+        private void CountItems()
+        {
+            DG.SelectAll(); int i = DG.SelectedItems.Count; DG.UnselectAll();
+            mItem.Header = ($"Выбрано {i} из {allcount}");
+        }
+        private void btSearch_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (cbCategory.SelectedItem != null && cbFIO.SelectedItem != null)
+                {
+                   DG.ItemsSource = PaymentsBaseLocalEntities.GetContext().Payment.Where(x => x.CategoryId == cbCategory.SelectedIndex + 1 && x.UserId == cbFIO.SelectedIndex + 1).ToList();     
+                   CountItems();
+                }
+                else if (cbCategory.SelectedItem != null && cbFIO.SelectedItem == null)
+                {
+                    DG.ItemsSource = PaymentsBaseLocalEntities.GetContext().Payment.Where(x => x.CategoryId == cbCategory.SelectedIndex + 1).ToList();
+                    CountItems();
+                }
+                else if (cbCategory.SelectedItem == null && cbFIO.SelectedItem != null)
+                {
+                    DG.ItemsSource = PaymentsBaseLocalEntities.GetContext().Payment.Where(x => x.UserId == cbFIO.SelectedIndex + 1).ToList();
+                    CountItems();
+                }
+                else
+                {
+                    MessageBox.Show("Вы не выбрали данные для отсортировки!");
+                }
+            }catch (Exception ex) {MessageBox.Show($"Error: {ex.Message.ToString()}"); }
+        }
+
+        private void btClear_Click (object sender, RoutedEventArgs e)
+        {
+            DG.ItemsSource = PaymentsBaseLocalEntities.GetContext().Payment.ToList();
+            cbCategory.SelectedIndex = -1;
+            cbFIO.SelectedIndex = -1;
+            mItem.Header = "";
         }
 
         private void btDel_Click(object sender, RoutedEventArgs e)
