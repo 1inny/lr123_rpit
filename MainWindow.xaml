@@ -46,6 +46,7 @@
                     <MenuItem Header="Управление" Background="RosyBrown" HorizontalAlignment="Center">
                         <Button Content="Добавить" Width="NaN" Name="btAdd" Click="btAdd_Click" Style="{StaticResource GreenButton}" />
                         <Button Content="Удалить" Width="NaN" Name="btDel" Click="btDel_Click" Style="{StaticResource RedButton}" />
+                        <Button Content="Экспорт" Width="NaN" Name="btExport" Click="btExport_Click" Style="{StaticResource YellowButton}"/>
                     </MenuItem>
                     <MenuItem Header="Сортировка" HorizontalAlignment="Center" Background="Chocolate">
                         <ComboBox Name="cbFIO"  Width="NaN"  SelectedItem="{Binding User}" DisplayMemberPath="FIO" SelectedValuePath="Id"/>

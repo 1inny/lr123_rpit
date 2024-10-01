@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.RightsManagement;
+using Word = Microsoft.Office.Interop.Word;
 
 namespace lr1_PaymentsBase
 {
@@ -31,7 +32,7 @@ namespace lr1_PaymentsBase
             cbFIO.ItemsSource = PaymentsBaseLocalEntities.GetContext().User.ToList();
             DG.ItemsSource = PaymentsBaseLocalEntities.GetContext().Payment.ToList();
             
-            DG.SelectAll();  allcount = DG.SelectedItems.Count; DG.UnselectAll();
+            allcount = DG.Items.Count;
             
         }
         
@@ -50,12 +51,21 @@ namespace lr1_PaymentsBase
         private void Window_Activated(object sender, EventArgs e)
         {
             DG.ItemsSource = PaymentsBaseLocalEntities.GetContext().Payment.ToList();
+            cbCategory.SelectedIndex = -1;
+            cbFIO.SelectedIndex = -1;
+            mItem.Header = "";
         }
 
         private void CountItems()
         {
-            DG.SelectAll(); int i = DG.SelectedItems.Count; DG.UnselectAll();
-            mItem.Header = ($"Выбрано {i} из {allcount}");
+            int n = DG.Items.Count;
+            var items = DG.ItemsSource;
+            decimal sum = 0;
+            foreach (Payment item in items) 
+            {
+                sum += item.Sum;
+            }
+            mItem.Header = ($"Выбрано {n} из {allcount}.  Сумма: {sum}");
         }
         private void btSearch_Click(object sender, RoutedEventArgs e)
         {
@@ -91,6 +101,80 @@ namespace lr1_PaymentsBase
             mItem.Header = "";
         }
 
+        private void btExport_Click(object sender, RoutedEventArgs e)
+        {
+            var allusers = PaymentsBaseLocalEntities.GetContext().User.ToList();
+            var allCategory = PaymentsBaseLocalEntities.GetContext().Category.ToList();
+
+            var app = new Word.Application();
+            Word.Document doc = app.Documents.Add();
+
+            foreach(var user in allusers)
+            {
+                Word.Paragraph userParagrapth = doc.Paragraphs.Add();
+                Word.Range userRange = userParagrapth.Range;
+                userRange.Text = user.FIO;
+                userParagrapth.set_Style("Title");
+                userRange.InsertParagraphAfter();
+
+                Word.Paragraph tableParagraph = doc.Paragraphs.Add();
+                Word.Range tableRange = tableParagraph.Range;
+                Word.Table paymentsTable = doc.Tables.Add(tableRange, allCategory.Count() + 1, 3);
+                paymentsTable.Borders.InsideLineStyle = paymentsTable.Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
+                paymentsTable.Range.Cells.VerticalAlignment = Word.WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+
+                Word.Range cellRange;
+
+                
+                cellRange = paymentsTable.Cell(1,1).Range;
+                cellRange.Text = "Категория";
+                cellRange = paymentsTable.Cell(1,2).Range;
+                cellRange.Text = "Сумма расходов";
+
+                paymentsTable.Rows[1].Range.Bold = 1;
+                paymentsTable.Rows[1].Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
+
+                for(int i = 0; i < allCategory.Count; i++)
+                {
+                    var curCategory = allCategory[i];
+
+                    cellRange = paymentsTable.Cell(i + 2, 1).Range;
+                    cellRange.Text = curCategory.Name;
+
+                    cellRange = paymentsTable.Cell(i + 2, 2).Range;
+                    cellRange.Text = user.Payment.ToList().Where(p => p.Category == curCategory).Sum(p => p.Num * p.Price).ToString("N2") + " руб.";
+                }
+
+                Payment maxPayment = user.Payment.OrderByDescending(p => p.Sum).FirstOrDefault();
+                if (maxPayment != null)
+                {
+                    Word.Paragraph maxPaymentParagraph = doc.Paragraphs.Add();
+                    Word.Range maxPaymentRange = maxPaymentParagraph.Range;
+                    maxPaymentRange.Text = $"Самый дорогостоящий платеж - {maxPayment.Name} за {(maxPayment.Sum).ToString("N2")}"+$" руб. от {maxPayment.Date.ToString("dd.MM.yyyy HH.mm")}";
+                    maxPaymentParagraph.set_Style("Intense Quote");
+                    maxPaymentRange.Font.Color = Word.WdColor.wdColorDarkRed;
+                    maxPaymentRange.InsertParagraphAfter();
+                }
+
+                Payment minPayment = user.Payment.OrderByDescending(p => p.Sum).FirstOrDefault();
+                if(minPayment != null)
+                {
+                    Word.Paragraph minPaymentParagraph = doc.Paragraphs.Add();
+                    Word.Range minPaymentRange = minPaymentParagraph.Range;
+                    minPaymentRange.Text = $"Самый дешевый платеж - {minPayment.Name}  за {(minPayment.Sum).ToString("N2")}" + $"  руб. от {minPayment.Date.ToString("dd.MM.yyyy HH.mm")}";
+                    minPaymentParagraph.set_Style("Intense Quote");
+                    minPaymentRange.Font.Color = Word.WdColor.wdColorDarkGreen;
+                    minPaymentRange.InsertParagraphAfter();
+                }
+                if(user != allusers.LastOrDefault())
+                    doc.Words.Last.InsertBreak(Word.WdBreakType.wdPageBreak);
+                
+
+            }
+            app.Visible = true;
+            doc.SaveAs2(@"C:\Test.docx");
+            doc.SaveAs2(@"C:\Test.pdf", Word.WdExportFormat.wdExportFormatPDF);
+        }
         private void btDel_Click(object sender, RoutedEventArgs e)
         {
             var PaymForDel = DG.SelectedItems.Cast<Payment>().ToList();
