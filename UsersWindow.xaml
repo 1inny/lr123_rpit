@@ -1,0 +1,72 @@
+﻿<Window x:Class="lr1_PaymentsBase.UsersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:lr1_PaymentsBase"
+        mc:Ignorable="d"
+        Title="UsersWindow" Height="400" Width="750" ResizeMode="CanMinimize" WindowStartupLocation="Manual"  Background="Black">
+    <Window.Resources>
+        <Style x:Key="GreenButton" >
+
+            <Setter Property="Button.FontFamily" Value="Verdana"/>
+
+            <Setter Property="Button.FontWeight" Value="Normal"/>
+            <Setter Property="Button.Foreground" Value="White"/>
+            <Setter Property="Button.Background" Value="DarkGreen"/>
+            <Setter Property="Button.BorderBrush" Value="Black"/>
+        </Style>
+        <Style x:Key="RedButton" >
+
+            <Setter Property="Button.FontFamily" Value="Verdana"/>
+
+            <Setter Property="Button.FontWeight" Value="Normal"/>
+            <Setter Property="Button.Foreground" Value="White"/>
+            <Setter Property="Button.Background" Value="DarkRed"/>
+            <Setter Property="Button.BorderBrush" Value="Black"/>
+        </Style>
+        <Style x:Key="YellowButton" >
+
+            <Setter Property="Button.FontFamily" Value="Verdana"/>
+
+            <Setter Property="Button.FontWeight" Value="Normal"/>
+            <Setter Property="Button.Foreground" Value="Black"/>
+            <Setter Property="Button.Background" Value="Yellow"/>
+            <Setter Property="Button.BorderBrush" Value="Black"/>
+        </Style>
+    </Window.Resources>
+    <Grid Background="Black">
+
+
+
+
+        <StackPanel >
+            <StackPanel >
+                <ComboBox Name="cbUsers" Width="NaN" Height="NaN" HorizontalAlignment="Left" SelectedItem="{Binding User}" DisplayMemberPath="FIO" SelectedValuePath="Id" SelectionChanged="cbUsers_SelectionChanged"/>
+                <Button Content="Сброс" Name="btClear" Click="btClear_Click" Width="NaN" Height="NaN" HorizontalAlignment="Left" Style="{StaticResource YellowButton}"/>
+
+                <DataGrid  Name="DG" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto" Height="416" IsReadOnly="True" Background="Black" Foreground="Black" HorizontalAlignment="Center">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding FIO}" Width="*" Header="ФИО"/>
+                        <DataGridTextColumn Binding="{Binding PIN}" Width="62" Header="PIN"/>
+                        <DataGridTextColumn Binding="{Binding Login}" Width="*" Header="Логин"/>
+                        <DataGridTextColumn Binding="{Binding Password}" Width="*" Header="Пароль"/>
+                        
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button
+                                     Name="btVip"
+                                     Content="Выписка"
+                                     Click="btVip_Click" Style="{StaticResource YellowButton}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

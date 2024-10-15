@@ -48,6 +48,12 @@ namespace lr1_PaymentsBase
             editwin.ShowDialog();
         }
 
+        private void btUsers_Click(object obj, RoutedEventArgs e)
+        {
+            UsersWindow usersWindow = new UsersWindow();
+            usersWindow.ShowDialog();
+        }
+
         private void Window_Activated(object sender, EventArgs e)
         {
             DG.ItemsSource = PaymentsBaseLocalEntities.GetContext().Payment.ToList();
@@ -67,14 +73,14 @@ namespace lr1_PaymentsBase
             }
             mItem.Header = ($"Выбрано {n} из {allcount}.  Сумма: {sum}");
         }
-        private void btSearch_Click(object sender, RoutedEventArgs e)
+        private void Filter_DG()
         {
             try
             {
                 if (cbCategory.SelectedItem != null && cbFIO.SelectedItem != null)
                 {
-                   DG.ItemsSource = PaymentsBaseLocalEntities.GetContext().Payment.Where(x => x.CategoryId == cbCategory.SelectedIndex + 1 && x.UserId == cbFIO.SelectedIndex + 1).ToList();     
-                   CountItems();
+                    DG.ItemsSource = PaymentsBaseLocalEntities.GetContext().Payment.Where(x => x.CategoryId == cbCategory.SelectedIndex + 1 && x.UserId == cbFIO.SelectedIndex + 1).ToList();
+                    CountItems();
                 }
                 else if (cbCategory.SelectedItem != null && cbFIO.SelectedItem == null)
                 {
@@ -88,10 +94,12 @@ namespace lr1_PaymentsBase
                 }
                 else
                 {
-                    MessageBox.Show("Вы не выбрали данные для отсортировки!");
+                    
                 }
-            }catch (Exception ex) {MessageBox.Show($"Error: {ex.Message.ToString()}"); }
+            }
+            catch (Exception ex) { MessageBox.Show($"Error: {ex.Message.ToString()}"); }
         }
+        
 
         private void btClear_Click (object sender, RoutedEventArgs e)
         {
@@ -174,8 +182,8 @@ namespace lr1_PaymentsBase
 
                 }
                 app.Visible = true;
-                doc.SaveAs2(@"C:\fds.docx");
-                doc.SaveAs2(@"C:\dfg.pdf", Word.WdExportFormat.wdExportFormatPDF);
+                doc.SaveAs2(@"C:\test\test.docx");
+                doc.SaveAs2(@"C:\test\testd.pdf", Word.WdExportFormat.wdExportFormatPDF);
             } catch (Exception ex) { MessageBox.Show($"Error: {ex.Message.ToString()}"); };
         }
         private void btDel_Click(object sender, RoutedEventArgs e)
@@ -199,6 +207,16 @@ namespace lr1_PaymentsBase
                     }catch(Exception ex) { MessageBox.Show($"Error: {ex.ToString()}"); }
                 } 
             }
+        }
+
+        private void cbFIO_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Filter_DG();
+        }
+
+        private void cbCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Filter_DG();
         }
     }
 }

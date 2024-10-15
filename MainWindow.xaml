@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:lr1_PaymentsBase"
         mc:Ignorable="d"
-        Title="PaymentWindow" Height="450" Width="800" Cursor="" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Activated="Window_Activated" Background="Black">
+        Title="PaymentWindow" Height="450" Width="800" Cursor="" ResizeMode="CanMinimize" WindowStartupLocation="Manual"  Activated="Window_Activated" Background="Black">
     <Window.Resources>
         <Style x:Key="GreenButton" >
 
@@ -14,6 +14,15 @@
             <Setter Property="Button.FontWeight" Value="Normal"/>
             <Setter Property="Button.Foreground" Value="White"/>
             <Setter Property="Button.Background" Value="DarkGreen"/>
+            <Setter Property="Button.BorderBrush" Value="Black"/>
+        </Style>
+        <Style x:Key="PurpleButton" >
+
+            <Setter Property="Button.FontFamily" Value="Verdana"/>
+
+            <Setter Property="Button.FontWeight" Value="Normal"/>
+            <Setter Property="Button.Foreground" Value="White"/>
+            <Setter Property="Button.Background" Value="Purple"/>
             <Setter Property="Button.BorderBrush" Value="Black"/>
         </Style>
         <Style x:Key="RedButton" >
@@ -47,11 +56,12 @@
                         <Button Content="Добавить" Width="NaN" Name="btAdd" Click="btAdd_Click" Style="{StaticResource GreenButton}" />
                         <Button Content="Удалить" Width="NaN" Name="btDel" Click="btDel_Click" Style="{StaticResource RedButton}" />
                         <Button Content="Экспорт" Width="NaN" Name="btExport" Click="btExport_Click" Style="{StaticResource YellowButton}"/>
+                        <Button Content="Пользователи" Width="NaN" Name="btUsers" Click="btUsers_Click" Style="{StaticResource PurpleButton}"/>
                     </MenuItem>
-                    <MenuItem Header="Сортировка" HorizontalAlignment="Center" Background="Chocolate">
-                        <ComboBox Name="cbFIO"  Width="NaN"  SelectedItem="{Binding User}" DisplayMemberPath="FIO" SelectedValuePath="Id"/>
-                        <ComboBox Name="cbCategory"  Width="NaN"  SelectedItem="{Binding Category}" DisplayMemberPath="Name" SelectedValuePath="Id"/>
-                        <Button Content="Найти" Name="btSearch" Click="btSearch_Click" Width="NaN" Style="{StaticResource GreenButton}"/>
+                    <MenuItem Header="Фильтр" HorizontalAlignment="Center" Background="Chocolate">
+                        <ComboBox Name="cbFIO"  Width="NaN"  SelectedItem="{Binding User}" DisplayMemberPath="FIO" SelectedValuePath="Id" SelectionChanged="cbFIO_SelectionChanged"/>
+                        <ComboBox Name="cbCategory"  Width="NaN"  SelectedItem="{Binding Category}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectionChanged="cbCategory_SelectionChanged"/>
+                        
                         <Button Content="Сброс" Name="btClear" Click="btClear_Click" Width="NaN" Style="{StaticResource YellowButton}"/>
                     </MenuItem>
                     <MenuItem Header="" Background="PowderBlue" Width="NaN" Name="mItem"/>
