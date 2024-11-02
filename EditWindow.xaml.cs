@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Diagnostics;
+using System.Windows.Forms.DataVisualization;
 
 namespace lr1_PaymentsBase
 {

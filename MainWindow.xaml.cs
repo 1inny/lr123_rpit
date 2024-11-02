@@ -53,6 +53,11 @@ namespace lr1_PaymentsBase
             UsersWindow usersWindow = new UsersWindow();
             usersWindow.ShowDialog();
         }
+        private void btDiag_Click(object obj, RoutedEventArgs e)
+        {
+            DiagWindow diagWindow = new DiagWindow();
+            diagWindow.ShowDialog();
+        }
 
         private void Window_Activated(object sender, EventArgs e)
         {
