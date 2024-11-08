@@ -55,7 +55,8 @@
                     <MenuItem Header="Управление" Background="RosyBrown" HorizontalAlignment="Center">
                         <Button Content="Добавить" Width="NaN" Name="btAdd" Click="btAdd_Click" Style="{StaticResource GreenButton}" />
                         <Button Content="Удалить" Width="NaN" Name="btDel" Click="btDel_Click" Style="{StaticResource RedButton}" />
-                        <Button Content="Экспорт" Width="NaN" Name="btExport" Click="btExport_Click" Style="{StaticResource YellowButton}"/>
+                        <Button Content="Экспорт Word" Width="NaN" Name="btExport" Click="btExport_Click" Style="{StaticResource YellowButton}"/>
+                        <Button Content="Экспорт Excel" Width="NaN" Name="btExportEx" Click="btExportEx_Click" Style="{StaticResource YellowButton}"/>
                         <Button Content="Пользователи" Width="NaN" Name="btUsers" Click="btUsers_Click" Style="{StaticResource PurpleButton}"/>
                         <Button Content="Диаграмма" Width="NaN" Name="btDiag" Click="btDiag_Click" Style="{StaticResource PurpleButton}"/>
                     </MenuItem>

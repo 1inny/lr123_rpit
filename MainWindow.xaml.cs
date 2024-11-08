@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.RightsManagement;
 using Word = Microsoft.Office.Interop.Word;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace lr1_PaymentsBase
 {
@@ -67,6 +68,40 @@ namespace lr1_PaymentsBase
             mItem.Header = "";
         }
 
+        private void btExportEx_Click(object sender, RoutedEventArgs e)
+        {
+            var allusers = PaymentsBaseLocalEntities.GetContext().User.ToList();
+            var allCategory = PaymentsBaseLocalEntities.GetContext().Category.ToList();
+
+            Excel.Application table = new Excel.Application(); Excel.Workbook wb = table.Workbooks.Add(Type.Missing); Excel.Worksheet ws = table.Worksheets.Item[1];
+            ws.Cells[2][1] = "Платежи"; ws.Cells[2][1].HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter; ws.Cells[2][1].Font.Bold = true;
+
+            int r = 2; int s = 0;
+            for(int i = 0; i < allusers.Count; i++)
+            {
+                var Idus = allusers[i].Id;
+                Excel.Range r1 = (Excel.Range)ws.get_Range($"A{r}", $"C{r}").Cells; r1.Merge(Type.Missing); r1.Font.Bold = true;
+                r1.Columns[1].ColumnWidth = 6; r1.Columns[2].ColumnWidth = 23; r1.Columns[3].ColumnWidth = 16;
+                ws.Cells[1][r] = allusers[i].FIO; ws.Cells[1][r].Interior.Color = Excel.XlRgbColor.rgbGrey;
+                r++;
+
+                var pay = PaymentsBaseLocalEntities.GetContext().Payment.Where(x => x.UserId == Idus).ToList();
+                for(int j = 0; j < pay.Count; j++)
+                {
+                    ws.Cells[2][r] = pay[j].Category.Name;
+                    ws.Cells[3][r] = pay[j].Sum; ws.Cells[3][r].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                    r++; s = s + (int)pay[j].Sum;
+                }
+                ws.Cells[2][r] = "Итого:"; ws.Cells[2][r].HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
+                ws.Cells[3][r] = s; ws.Cells[3][r].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                s = 0; r++;
+                Excel.Range r2 = (Excel.Range)ws.get_Range($"A{r}", $"C{r}").Cells; r2.Merge(Type.Missing);
+                r++;
+            }
+            Excel.Range r3 = (Excel.Range)ws.get_Range("A1", $"C{r - 1}").Cells; r3.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+            table.Visible = true;
+
+        }
         private void CountItems()
         {
             int n = DG.Items.Count;
