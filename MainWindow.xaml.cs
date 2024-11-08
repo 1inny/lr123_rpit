@@ -88,9 +88,19 @@ namespace lr1_PaymentsBase
                 var pay = PaymentsBaseLocalEntities.GetContext().Payment.Where(x => x.UserId == Idus).ToList();
                 for(int j = 0; j < pay.Count; j++)
                 {
-                    ws.Cells[2][r] = pay[j].Category.Name;
-                    ws.Cells[3][r] = pay[j].Sum; ws.Cells[3][r].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
-                    r++; s = s + (int)pay[j].Sum;
+
+                    if (ws.Cells[2][r - 1].Value == pay[j].Category.Name)
+                    {
+                        ws.Cells[3][r - 1] = ws.Cells[3][r - 1].Value + Convert.ToDouble(pay[j].Sum);
+                        
+                    }
+                    else
+                    {
+                        ws.Cells[2][r] = pay[j].Category.Name;
+                        ws.Cells[3][r] = pay[j].Sum; ws.Cells[3][r].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;
+                        r++;
+                    }
+                     s = s + (int)pay[j].Sum;
                 }
                 ws.Cells[2][r] = "Итого:"; ws.Cells[2][r].HorizontalAlignment = Excel.XlHAlign.xlHAlignRight;
                 ws.Cells[3][r] = s; ws.Cells[3][r].HorizontalAlignment = Excel.XlHAlign.xlHAlignLeft;

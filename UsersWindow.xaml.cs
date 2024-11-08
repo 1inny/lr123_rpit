@@ -40,7 +40,7 @@ namespace lr1_PaymentsBase
             {
                 DG.ItemsSource = PaymentsBaseLocalEntities.GetContext().User.Where(x => x.Id == cbUsers.SelectedIndex + 1).ToList();
             }
-             vipiska((sender as ComboBox).DataContext as User);
+            vipiska(cbUsers.SelectedItem as User);
         }
         private void btClear_Click(object sender,  RoutedEventArgs e)
         {
